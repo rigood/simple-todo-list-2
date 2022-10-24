@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /* State */
 import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
+import { isDarkAtom } from "./recoil";
 
 /* Theme, Style */
 import { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -32,11 +32,12 @@ body{
   color: ${(props) => props.theme.textColor};
   font-family: 'MICEGothic Bold';
 }
-input{
+input,
+button {
   all: unset;
-  &::placeholder {
+}
+input::placeholder {
     color: inherit;
-  }
 }
 li{
   list-style: none;

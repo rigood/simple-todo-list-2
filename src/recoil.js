@@ -25,18 +25,32 @@ export const todoAtom = atom({
 
 export const sortAtom = atom({
   key: "sortAtom",
-  default: "old",
+  default: "new",
   effects_UNSTABLE: [persistAtom],
 });
 
-export const sortedTodoAtom = selector({
-  key: "sortedTodoAtom",
+export const filterAtom = atom({
+  key: "filterAtom",
+  default: "all",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const sortedTodoSelector = selector({
+  key: "sortedTodoSelector",
   get: ({ get }) => {
     const sort = get(sortAtom);
     const todos = get(todoAtom);
     const todosCopy = [...todos];
 
     switch (sort) {
+      case "new":
+        return todosCopy.sort((a, b) => {
+          return b.id - a.id;
+        });
+      case "old":
+        return todosCopy.sort((a, b) => {
+          return a.id - b.id;
+        });
       case "asc":
         return todosCopy.sort((a, b) => {
           const textA = a.value;
@@ -49,14 +63,23 @@ export const sortedTodoAtom = selector({
           const textB = b.value;
           return textB.localeCompare(textA);
         });
-      case "new":
-        return todosCopy.sort((a, b) => {
-          return b.id - a.id;
-        });
-      case "old":
-        return todosCopy.sort((a, b) => {
-          return a.id - b.id;
-        });
+    }
+  },
+});
+
+export const filteredTodoSelector = selector({
+  key: "filteredTodoSelector",
+  get: ({ get }) => {
+    const filter = get(filterAtom);
+    const sortedTodos = get(sortedTodoSelector);
+
+    switch (filter) {
+      case "doing":
+        return sortedTodos.filter((todo) => !todo.isDone);
+      case "done":
+        return sortedTodos.filter((todo) => todo.isDone);
+      default:
+        return sortedTodos;
     }
   },
 });

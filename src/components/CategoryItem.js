@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 
 import { useRecoilState } from "recoil";
-import { categoryAtom, todoAtom } from "../atoms";
+import { categoryAtom, todoAtom } from "../recoil";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faCheck, faEllipsis } from "@fortawesome/free-solid-svg-icons";

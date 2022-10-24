@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { useRecoilValue } from "recoil";
-import { categoryAtom } from "../atoms";
+import { categoryAtom } from "../recoil";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import { useRecoilState } from "recoil";
-import { todoAtom } from "../atoms";
+import { todoAtom } from "../recoil";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 
 import { useSetRecoilState } from "recoil";
-import { categoryAtom } from "../atoms";
+import { categoryAtom } from "../recoil";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
