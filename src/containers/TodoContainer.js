@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import { useMatch } from "react-router-dom";
 
-import { useRecoilValue } from "recoil";
-import { categoryAtom, todoAtom } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { categoryAtom, sortedTodoAtom, sortAtom } from "../atoms";
 
 import TodoCreator from "../components/TodoCreator";
 import TodoItem from "../components/TodoItem";
@@ -21,6 +21,14 @@ const Header = styled.div`
   margin-bottom: 20px;
 `;
 
+const Sort = styled.select`
+  width: 100px;
+  margin-left: auto;
+  border: none;
+  font-family: inherit;
+  color: inherit;
+`;
+
 const List = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
@@ -29,7 +37,8 @@ const List = styled.div`
 
 function TodoContainer() {
   const categories = useRecoilValue(categoryAtom);
-  const todos = useRecoilValue(todoAtom);
+  const sortedTodos = useRecoilValue(sortedTodoAtom);
+  const [sort, setSort] = useRecoilState(sortAtom);
 
   const urlMatch = useMatch("/:id");
   const categoryId = urlMatch?.params.id;
@@ -39,9 +48,13 @@ function TodoContainer() {
 
   const todosMatch =
     categoryMatch &&
-    todos.filter(
+    sortedTodos.filter(
       (todo) => String(todo.categoryId) === String(categoryMatch.id)
     );
+
+  const handleSort = (e) => {
+    setSort(e.target.value);
+  };
 
   if (!categoryMatch) {
     return (
@@ -55,6 +68,12 @@ function TodoContainer() {
     <Wrapper>
       <Header> {categoryMatch.value}</Header>
       <TodoCreator categoryId={categoryMatch.id} />
+      <Sort value={sort} onChange={handleSort}>
+        <option value="old">오래된순</option>
+        <option value="new">최신순</option>
+        <option value="asc">가나다순</option>
+        <option value="desc">가나다 역순</option>
+      </Sort>
       <List>
         {todosMatch.map((todo) => (
           <TodoItem key={todo.id} todo={todo} />
