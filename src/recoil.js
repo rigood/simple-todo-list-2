@@ -5,81 +5,137 @@ const { persistAtom } = recoilPersist({
   key: "react-todolist",
 });
 
-export const isDarkAtom = atom({
-  key: "isDarkAtom",
+export const isDarkState = atom({
+  key: "isDarkState",
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
 
-export const categoryAtom = atom({
-  key: "categoryAtom",
-  default: [],
+export const categoriesState = atom({
+  key: "categoriesState",
+  default: [
+    { id: 1698407099750, value: "카테고리1" },
+    { id: 1698407101694, value: "카테고리2" },
+    { id: 1698407103565, value: "카테고리3" },
+  ],
   effects_UNSTABLE: [persistAtom],
 });
 
-export const todoAtom = atom({
-  key: "todoAtom",
-  default: [],
+export const todosState = atom({
+  key: "todosState",
+  default: [
+    {
+      id: 1698408167889,
+      categoryId: 1698407099750,
+      value: "할일1",
+      isDone: false,
+    },
+    {
+      id: 1698408169317,
+      categoryId: 1698407099750,
+      value: "할일2",
+      isDone: true,
+    },
+    {
+      id: 1698408170517,
+      categoryId: 1698407099750,
+      value: "할일3",
+      isDone: false,
+    },
+    {
+      id: 1698408177454,
+      categoryId: 1698407101694,
+      value: "할일1",
+      isDone: false,
+    },
+    {
+      id: 1698408178414,
+      categoryId: 1698407101694,
+      value: "할일2",
+      isDone: true,
+    },
+    {
+      id: 1698408179486,
+      categoryId: 1698407101694,
+      value: "할일3",
+      isDone: true,
+    },
+    {
+      id: 1698408186506,
+      categoryId: 1698407103565,
+      value: "할일1",
+      isDone: true,
+    },
+    {
+      id: 1698408187430,
+      categoryId: 1698407103565,
+      value: "할일2",
+      isDone: true,
+    },
+    {
+      id: 1698408188366,
+      categoryId: 1698407103565,
+      value: "할일3",
+      isDone: false,
+    },
+    {
+      id: 1698408189198,
+      categoryId: 1698407103565,
+      value: "할일4",
+      isDone: false,
+    },
+  ],
   effects_UNSTABLE: [persistAtom],
 });
 
-export const sortAtom = atom({
-  key: "sortAtom",
+export const sortState = atom({
+  key: "sortState",
   default: "new",
   effects_UNSTABLE: [persistAtom],
 });
 
-export const filterAtom = atom({
-  key: "filterAtom",
+export const filterState = atom({
+  key: "filterState",
   default: "all",
   effects_UNSTABLE: [persistAtom],
 });
 
-export const sortedTodoSelector = selector({
-  key: "sortedTodoSelector",
+export const filteredTodosState = selector({
+  key: "filteredTodosState",
   get: ({ get }) => {
-    const sort = get(sortAtom);
-    const todos = get(todoAtom);
-    const todosCopy = [...todos];
+    const sort = get(sortState);
+    const filter = get(filterState);
+    const todos = get(todosState);
+
+    let filteredTodos;
+
+    if (filter === "doing") {
+      filteredTodos = todos.filter((todo) => !todo.isDone);
+    } else if (filter === "done") {
+      filteredTodos = todos.filter((todo) => todo.isDone);
+    } else {
+      filteredTodos = todos;
+    }
 
     switch (sort) {
       case "new":
-        return todosCopy.sort((a, b) => {
-          return b.id - a.id;
-        });
+        return [...filteredTodos].sort((a, b) => b.id - a.id);
       case "old":
-        return todosCopy.sort((a, b) => {
-          return a.id - b.id;
-        });
+        return [...filteredTodos].sort((a, b) => a.id - b.id);
       case "asc":
-        return todosCopy.sort((a, b) => {
+        return [...filteredTodos].sort((a, b) => {
           const textA = a.value;
           const textB = b.value;
           return textA.localeCompare(textB);
         });
       case "desc":
-        return todosCopy.sort((a, b) => {
+        return [...filteredTodos].sort((a, b) => {
           const textA = a.value;
           const textB = b.value;
           return textB.localeCompare(textA);
         });
-    }
-  },
-});
-
-export const filteredTodoSelector = selector({
-  key: "filteredTodoSelector",
-  get: ({ get }) => {
-    const filter = get(filterAtom);
-    const sortedTodos = get(sortedTodoSelector);
-
-    switch (filter) {
-      case "doing":
-        return sortedTodos.filter((todo) => !todo.isDone);
-      case "done":
-        return sortedTodos.filter((todo) => todo.isDone);
       default:
-        return sortedTodos;
+        return filteredTodos;
     }
   },
 });

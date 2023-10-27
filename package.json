@@ -1,5 +1,5 @@
 {
-  "name": "react-todolist",
+  "name": "simple-todo-list-2",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -49,5 +49,5 @@
   "devDependencies": {
     "gh-pages": "^5.0.0"
   },
-  "homepage": "https://rigood.github.io/react-todolist"
+  "homepage": "https://rigood.github.io/simple-todo-list-2"
 }
