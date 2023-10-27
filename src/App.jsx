@@ -15,7 +15,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? dark : light}>
       <GlobalStyle />
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Layout>
           <DarkModeButton />
           <CategoryContainer />
